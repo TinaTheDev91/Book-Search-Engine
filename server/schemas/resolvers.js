@@ -44,11 +44,14 @@ const resolvers = {
     },
     deleteBook: async (parent, args, context) => {
         if (context.user) {
-            const book = await User.findOneAndDelete(
+            const book = await User.findOneAndUpdate(
                 { _id: context.user._id },
-                { $pull: { savedBooks: { bookId: params.bookId } }}
-            )
+                { $pull: { savedBooks:  args } },
+                { new: true }
+            );
+            return book;
         }
+        throw new AuthenticationError('Please log in to perform this action')
     }
   },
 };
