@@ -5,7 +5,7 @@ const { signToken } = require('../utils/auth');
 
 const resolvers = {
   Query: {
-    getSingleUser: async (parent, { username }) => {
+    user: async (parent, { username }) => {
       return User.findOne({ username: username });
     },
   },
@@ -16,7 +16,7 @@ const resolvers = {
         return { token, user }
     },
     login: async (parent, { username, email, password }) => {
-      const user = await User.findOne({ $or: [{ username: username }, { email: email }] });
+      const user = await User.findOne( {or: [{ username }, { email }] } );
         
       if (!user) {
         throw new AuthenticationError('Cannot locate this user');
