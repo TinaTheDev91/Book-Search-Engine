@@ -15,8 +15,8 @@ const resolvers = {
         const token = signToken(user);
         return { token, user }
     },
-    login: async (parent, { username, email, password }) => {
-      const user = await User.findOne( {or: [{ username }, { email }] } );
+    login: async (parent, { email, password }) => {
+      const user = await User.findOne({ email });
         
       if (!user) {
         throw new AuthenticationError('Cannot locate this user');
